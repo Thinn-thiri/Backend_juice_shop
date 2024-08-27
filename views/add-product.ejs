@@ -1,0 +1,89 @@
+<%- include('partials/header'); %>
+    <%- include('partials/nav'); %>
+        <h1>Add product page</h1>
+        <div class="product-contain">
+            Hello, it is still loading....
+        </div>
+        <div class="Form-container">
+            <h2>Add Products</h2>
+            <form id="add_product_form">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                    <div class="name error text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="number" class="form-control" id="price" name="price" required>
+                    <div class="price error text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <input type="text" class="form-control" id="description" name="description" required>
+                    <div class="description error text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="img" class="form-label">Image URL</label>
+                    <input type="url" class="form-control" id="img" name="img">
+                    <div class="img error text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="img-preview" class="form-label">Image preview</label><br>
+                    <picture>
+                        <source id="image-source" srcset="" type="image/jpeg">
+                        <img id="image-preview" src="" class="img-fluid img-thumbnail" alt="...">
+                    </picture>
+                </div>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+        </div>
+        <script>
+            const add_product_form = document.getElementById("add_product_form");
+            document.getElementById('img').addEventListener('input', function () {
+                var imageUrl = this.value;
+                var errorDiv = document.querySelector('.img.error');
+
+                // Regular expression to check if the URL ends with .jpg or .jpeg
+                var jpgRegex = /\.(jpg|jpeg)$/i;
+
+                if (jpgRegex.test(imageUrl)) {
+                    document.getElementById('image-preview').src = imageUrl;
+                    document.getElementById('image-source').srcset = imageUrl;
+                    errorDiv.textContent = '';  // Clear any previous error message
+                } else {
+                    errorDiv.textContent = 'Please enter a valid JPG image URL.';
+                    document.getElementById('image-preview').src = '';  // Clear the image preview
+                    document.getElementById('image-source').srcset = '';
+                }
+            });
+            add_product_form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                let name = document.getElementById("name").value;
+                let price = document.getElementById("price").value;
+                let description = document.getElementById("description").value;
+                let img = document.getElementById("img").value;
+                try {
+                    let res = await fetch("/product",
+                        {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                name, price, description, img
+                            })
+                        })
+                    if (res.status == 201) {
+                        alert("Product Added Successfully");
+                        add_product_form.reset();
+                    }
+                    else {
+                        alert("Something went wrong...");
+                    }
+                }
+                catch (err) {
+                    console.log("Errors");
+                    console.log(err);
+                }
+            })
+
+        </script>
+        <%- include('partials/footer'); %>

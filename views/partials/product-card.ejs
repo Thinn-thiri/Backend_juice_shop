@@ -1,0 +1,29 @@
+<div <% if (product.isDeleted) { %>
+    class="card-readonly"
+    <% } else { %>
+        class="card"
+        <% }%>>
+            <img src="<%= product.img %>" class="card-img-top" alt="<%= product.title %>">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <%= product.name %>
+                </h5>
+                <div class="product-description">
+                    <p class="card-text">Price : <%= product.price %>
+                    </p>
+                    <p class="card-text">
+                        <%= product.description %>
+                    </p>
+                    <div class="product-info-btns">
+                        <a type="button" class="btn btn-sm btn-outline-primary"
+                            href="/product/<%= product.id %>/details">View</a>
+                        <% if (user.role=="admin" ) { %>
+                            <a type="button" class="btn btn-sm btn-outline-primary"
+                                href="/product/<%= product.id %>">Update</a>
+                            <% } %>
+                    </div>
+
+
+                </div>
+            </div>
+</div>

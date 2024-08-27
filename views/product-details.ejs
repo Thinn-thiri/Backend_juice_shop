@@ -1,0 +1,28 @@
+<%- include('partials/header'); %>
+    <%- include('partials/nav'); %>
+        <div class="details" style="
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    background-color: rgba(198, 197, 197, 0.542);
+    padding: 80px;
+">
+            <div class="detail-img">
+                <img src="<%= product.img %>" alt="" style="
+     width: 300px; 
+    height: 300px;
+    object-fit: cover;
+         ">
+            </div>
+            <div class="detail-text">
+                <h5 class="card-title">
+                    <%= product.name %>
+                </h5>
+                <p class="card-text">Price : <%= product.price %>
+                </p>
+                <p class="card-text">
+                    <%= product.description %>
+                </p>
+            </div>
+        </div>
+        <%- include('partials/footer'); %>

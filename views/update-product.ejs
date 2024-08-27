@@ -1,0 +1,107 @@
+<%- include('partials/header'); %>
+    <%- include('partials/nav'); %>
+        <h1>Update product page</h1>
+        <div class="Form-container">
+            <h2>Update Products</h2>
+            <form id="update_product_form">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" value="<%= product.name%>" required>
+                    <div class="name error text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="number" class="form-control" id="price" name="price" value="<%= product.price%>"
+                        required>
+                    <div class="price error text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <input type="text" class="form-control" id="description" name="description"
+                        value="<%= product.description%>" required>
+                    <div class="description error text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="img" class="form-label">Image URL</label>
+                    <input type="url" class="form-control" id="img" name="img" value="<%= product.img%>">
+                    <div class="img error text-danger"></div>
+                </div>
+                <div class="mb-3">
+                    <label for="img-preview" class="form-label">Image preview</label><br>
+                    <picture>
+                        <source id="image-source" srcset="<%= product.img%>" type="image/jpeg">
+                        <img id="image-preview" src="<%= product.img%>" class="img-fluid img-thumbnail" alt="...">
+                    </picture>
+                </div>
+                <button type="submit" class="btn btn-primary">Update</button>
+                <button type="button" class="btn btn-sm btn-outline-primary delete-btn">Delete</button>
+                <input type="hidden" id="product_id" name="product_id" value="<%= product._id %>">
+            </form>
+        </div>
+        <script>
+            const update_product_form = document.getElementById("update_product_form");
+            update_product_form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                let id = document.getElementById("product_id").value;
+                let name = document.getElementById("name").value;
+                let price = document.getElementById("price").value;
+                let description = document.getElementById("description").value;
+                let img = document.getElementById("img").value;
+                console.log(id)
+                try {
+                    let res = await fetch(`/product/${id}/update`,
+                        {
+                            method: "PUT",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                name, price, img, description
+                            })
+                        })
+                    if (res.status == 200) {
+                        alert("Product Updated Successfully");
+                        document.getElementById("name").value = '';
+                        document.getElementById("price").value = '';
+                        document.getElementById("description").value = '';
+                        document.getElementById("img").value = '';
+
+                        // Optionally clear the image preview as well
+                        document.getElementById("image-preview").src = '';
+                        document.getElementById("image-source").srcset = '';
+                    }
+                    else {
+                        alert("Something went wrong...");
+                    }
+                }
+                catch (err) {
+                    console.log(err);
+                }
+            })
+            update_product_form.addEventListener("click", async (e) => {
+                e.preventDefault();
+                let id = document.getElementById("product_id").value;
+
+                try {
+                    let res = await fetch(`/product/${id}/delete`, {
+                        method: "DELETE",
+                    })
+                    if (res.status == 200) {
+                        alert("Product Deleted Successfully");
+                        document.getElementById("name").value = '';
+                        document.getElementById("price").value = '';
+                        document.getElementById("description").value = '';
+                        document.getElementById("img").value = '';
+
+                        // Optionally clear the image preview as well
+                        document.getElementById("image-preview").src = '';
+                        document.getElementById("image-source").srcset = '';
+                    }
+                    else {
+                        alert("Something went wrong...");
+                    }
+                } catch (err) {
+                    console.log(err)
+                }
+            }
+            )
+        </script>
+        <%- include('partials/footer'); %>

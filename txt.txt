@@ -1,0 +1,9 @@
+ejs         <%  %> 
+ejsout      <%=  %> 
+ejsif       <% if (condition) { %> 
+ejselse     <% } else { %> 
+            <% } %>
+
+
+
+mongosh <-- start mongodb shell

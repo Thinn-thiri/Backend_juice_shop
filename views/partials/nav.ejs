@@ -1,0 +1,40 @@
+<div class="nav">
+    <div class="container">
+        <ul>
+            <li>
+                <a href="/">Home</a>
+            </li>
+            <li>
+                <a href="/product">Products</a>
+            </li>
+            <li>
+                <a href="#">Contact Us</a>
+            </li>
+            <li>
+                <a href="#">Account</a>
+            </li>
+        </ul>
+        <% if (page_title=="product" ) { %>
+            <form class="d-flex" id="search_bar">
+                <div class="input-group">
+                    <input class="form-control me-2" name="keyword" type="search" placeholder="Search"
+                        aria-label="Search">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </div>
+            </form>
+            <% } %>
+                <% if (!locals.user) { %>
+                    <a id="login-btn" class="btn btn-primary" href="/login" role="button">Sign In</a>
+                    <% } else { %>
+                        <% if (user.role=="admin" ) { %>
+                            <a class="btn btn-primary" role="button" href="/add-product">Add a product</a>
+                            <% } %>
+                                <p>hi, <%= user.username %>
+                                </p>
+                                <a id="logot-btn" class="btn btn-primary --bs-danger" href="/logout"
+                                    role="button">Logout</a>
+                                <% } %>
+
+    </div>
+
+</div>

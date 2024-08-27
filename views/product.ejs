@@ -1,0 +1,46 @@
+<%- include('partials/header'); %>
+    <%- include('partials/nav'); %>
+        <h1>This is Product</h1>
+        <div class="product-contain">
+            <% if (locals.products) { %>
+                <%- include('partials/selection-section', {selection : products}) %>
+                    <% } else { %>
+                        <h2>
+                            Sorry, we currently don't have any products available right now.
+                        </h2>
+                        <p>
+                            If you have any inquiry, please contact our <a>Customer Support</a>
+                        </p>
+                        <% } %>
+        </div>
+        <script>
+            const search_bar = document.getElementById("search_bar");
+            var r;
+            search_bar.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                let keyword = encodeURIComponent(search_bar.keyword.value);
+                if (keyword == "") {
+                    window.location = "/product";
+                    return;
+                }
+                try {
+                    let response = await fetch(`/find-products?keyword=${keyword}`, {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    })
+                    if (response.status == 200) {
+                        response.json().then(data => {
+                            // console.log(data)
+                            document.querySelector(".product-contain").innerHTML = data.html
+                        }).catch(err => console.log(err))
+                    }
+                } catch (err) {
+                    console.log(err)
+                }
+            })
+
+
+        </script>
+        <%- include('partials/footer'); %>
